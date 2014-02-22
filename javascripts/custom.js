@@ -4,26 +4,51 @@
 
         createNodes: function () {
             var bodyNode, divNode, commentNode;
-            // Get body node
+            /**
+             * Returns a list of elements with the given tag name and namespace.
+             * @see https://developer.mozilla.org/en-US/docs/Web/API/Document.getElementsByTagName
+             */
             bodyNode = document.getElementsByTagName("body")[0];
+
+            /**
+             * Creates a new element with the given tag name.
+             * @see https://developer.mozilla.org/en-US/docs/Web/API/Document.createElement
+             */
+            divNode = document.createElement("div");
+            divNode.innerHTML = "DOM node created for creation!";
+            /**
+             * Insert a Node as the last child node of this element.
+             * @see https://developer.mozilla.org/en-US/docs/Web/API/Node.appendChild
+             */
+            bodyNode.appendChild(divNode);
+
+            /**
+             * Returns a duplicate of the node on which this method was called.
+             * @see https://developer.mozilla.org/en-US/docs/Web/API/Node.cloneNode
+             */
+            divNode = divNode.cloneNode(true);
+            divNode.id = "updateId";
+            divNode.innerHTML = "DOM node created for update!";
+            bodyNode.appendChild(divNode);
 
             // Create a new element
             divNode = document.createElement("div");
-            divNode.innerHTML = "It works!";
+            divNode.id = "deleteId";
+            divNode.innerHTML = "DOM node created for removal!";
+            /**
+             * Inserts the first Node given in a parameter immediately before the second, child of this element, Node.
+             * @see https://developer.mozilla.org/en-US/docs/Web/API/Node.insertBefore
+             */
+            bodyNode.insertBefore(divNode);
 
-            // Append new node to body node
-            bodyNode.appendChild(divNode);
 
+            // Comment node
             commentNode = document.createComment("Comment in HTML");
-
             bodyNode.appendChild(commentNode);
-
-
-
 
         },
 
-        retrieveNodes: function() {
+        retrieveNodes: function () {
 
             /**
              * Returns an object reference to the identified element.
@@ -59,25 +84,28 @@
              * Returns a list of all the Element nodes within the document that match the specified selectors.
              * @see https://developer.mozilla.org/en-US/docs/Web/API/Document.querySelectorAll
              */
-            document.querySelector("div.someClass p.someOtherClass");
+            document.querySelectorAll("div.someClass p.someOtherClass");
 
         },
 
-        updateNodes: function() {
+        updateNodes: function () {
             var node;
             // get node
-            node = document.getElementById("a");
-            node.innerHTML = "Hello again!";
-
-
-
+            node = document.getElementById("updateId");
+            node.innerHTML = "DOM node created for update! (updated)";
         },
 
-        deleteNodes: function() {
-
+        deleteNodes: function () {
+            var node;
+            /**
+             * Removes a child node from the current element, which must be a child of the current node.
+             * @see https://developer.mozilla.org/en-US/docs/Web/API/Node.removeChild
+             */
+            node = document.getElementById("deleteId");
+            node.parentNode.removeChild(node);
         },
 
-        init: function() {
+        init: function () {
             crud.createNodes();
             crud.retrieveNodes();
             crud.updateNodes();
@@ -91,7 +119,6 @@
 
 }());
 
-window.onload=function() {
+window.addEventListener("load", function () {
     crud.init();
-
-}
+}, false);
